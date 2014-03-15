@@ -153,7 +153,6 @@ class MultipartEncoder(object):
 
         while size is None or written < size:
             next_tuple = self._next_tuple()
-            print "Next tuple : ", next_tuple
             if not next_tuple:
                 self.finished = True
                 break
@@ -179,12 +178,10 @@ class MultipartEncoder(object):
         if size is None:
             size = -1
 
-        written_separator = False
         if self._current_data is not None:
             # and super_len(self._current_data) >= 0):
             # Read from field, copy to _buffer :
             written = self._buffer.write(self._current_data.read(size))
-            print "   written=",written,"  super_len(self._current_data) == ",super_len(self._current_data)
             if super_len(self._current_data) == 0:
                 # We have consumed all data of this field: forget it, add boundary
                 self._current_data = None
@@ -193,7 +190,6 @@ class MultipartEncoder(object):
                                 self.encoding)
                     )
                 # If this is the last separator add -- before \r\n :
-                print "END of field : current_number=",self._current_field_number
                 if self._current_field_number == len(self.fields):
                     self._buffer.write(encode_with('--', self.encoding))
                 self._buffer.write(encode_with('\r\n', self.encoding))
